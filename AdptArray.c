@@ -44,13 +44,11 @@ void DeleteAdptArray(PAdptArray adt) {
     PElement current; 
     for (int i = 0; i < adt->size; i++)
     {
-        current = adt->addArr[i];
-        if (current) { // elements can be NULL
-            adt->delete_func(current);
+        if (adt->addArr[i]) { // elements can be NULL
+            adt->delete_func(adt->addArr[i]);
         }
     }
 
-    free(current);
     free(adt->addArr);
     free(adt);
 }
@@ -76,8 +74,6 @@ PElement GetAdptArrayAt(PAdptArray adt, int i) {
 
     return adt->copy_func(adt->addArr[i]);
     
-    
-    
 }
 
 int GetAdptArraySize(PAdptArray adt) {
@@ -92,6 +88,18 @@ int GetAdptArraySize(PAdptArray adt) {
 
 void PrintDB(PAdptArray adt) {
 
+    if (!adt)
+    {
+        return NULL;
+    }
+
+    for (int i = 0; i < adt->size; i++)
+    {
+        if (adt->addArr[i])
+        {
+            adt->print_func(adt->addArr[i]);
+        }
+    }
 }
 
 
