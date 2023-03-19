@@ -87,7 +87,7 @@ Result SetAdptArrayAt(PAdptArray adaptArr, int i, PElement element) {
     }
     else { // array is too small, incrase its size 
         PElement* new_arr = (PElement)calloc(i + 1, sizeof(PElement));
-        // copy all elements
+        // copy all elements from old array to new
         for (int i = 0; i < adaptArr->size; i++)
         {
             if (adaptArr->adpArr[i]) // not NULL
@@ -98,10 +98,11 @@ Result SetAdptArrayAt(PAdptArray adaptArr, int i, PElement element) {
                 new_arr[i] = NULL;
             }
         }
-        free(adaptArr->adpArr);
+        // free old array and turn new array to adaptArr's array
+        free(adaptArr->adpArr); 
         adaptArr->adpArr = new_arr;
-        adaptArr->adpArr[i] = adaptArr->copy_func(element);
-        adaptArr->size = i + 1;
+        adaptArr->adpArr[i] = adaptArr->copy_func(element); // insert copy of the element
+        adaptArr->size = i + 1; 
         return SUCCESS;
     }
     
