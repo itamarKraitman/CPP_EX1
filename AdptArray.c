@@ -38,10 +38,9 @@ void DeleteAdptArray(PAdptArray adt) {
 
     if (!adt)
     {
-        return NULL;
+        return;
     }
 
-    PElement current; 
     for (int i = 0; i < adt->size; i++)
     {
         if (adt->addArr[i]) { // elements can be NULL
@@ -53,8 +52,46 @@ void DeleteAdptArray(PAdptArray adt) {
     free(adt);
 }
 
-Result SetAdptArrayAt(PAdptArray adt, int index, PElement element) {
-
+Result SetAdptArrayAt(PAdptArray adt, int i, PElement element) {
+    if (!adt || !element)
+    {
+        return FAIL;
+    }
+    if (i < 0)
+    {
+        return FAIL;
+    }
+    
+    if (i + 1 < adt->size) // there is such index in array
+    {
+        if (adt->addArr[i]) // not NULL, free current element
+        {
+            free(adt->addArr[i]);
+        }
+        adt->addArr[i] = adt->copy_func(element);
+        return SUCCESS;
+    }
+    else { // array is too small, incrase its size 
+        PElement* new_arr = (PElement)calloc(i + 1, sizeof(PElement));
+        // copy all elements
+        for (int i = 0; i < adt->size; i++)
+        {
+            if (adt->addArr[i]) // not NULL
+            {
+                new_arr[i] = adt->addArr[i];
+            }
+            else {
+                new_arr[i] = NULL;
+            }
+        }
+        free(adt->addArr);
+        adt->addArr = new_arr;
+        adt->addArr[i] = adt->copy_func(element);
+        adt->size = i + 1;
+        return SUCCESS;
+    }
+    
+    
 }
 
 PElement GetAdptArrayAt(PAdptArray adt, int i) {
@@ -63,13 +100,13 @@ PElement GetAdptArrayAt(PAdptArray adt, int i) {
     {
         return NULL; 
     }
-    if (adt->size < i)
+    if (adt->size < i || i < 0)
     {
         return NULL;
     }
-    if (!adt->addArr[i])
+    if (adt->addArr[i] == NULL)
     {
-        return FAIL;
+        return NULL;
     }
 
     return adt->copy_func(adt->addArr[i]);
@@ -90,7 +127,7 @@ void PrintDB(PAdptArray adt) {
 
     if (!adt)
     {
-        return NULL;
+        return;
     }
 
     for (int i = 0; i < adt->size; i++)
