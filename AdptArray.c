@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include "AdptArray.h"
 #include <stdlib.h>
-#include <string.h>
-
 
 // defining the ADT
 typedef struct AdptArray_
 {
-    PElement* addArr;
+    PElement* adpArr;
     COPY_FUNC copy_func;
     DEL_FUNC delete_func;
     PRINT_FUNC print_func;
@@ -15,45 +13,61 @@ typedef struct AdptArray_
 }AdptArray_;
 
 
-// creating adt, takes three arguments and retruns NULL if fails 
+/**
+ * creating adaptArr, takes three arguments and retruns NULL if fails 
+ * @param copy_func copy function
+ * @param del_func delete function
+ * @param print_func print function
+ * @return initilized ADT
+*/
 PAdptArray CreateAdptArray(COPY_FUNC copy_func, DEL_FUNC del_func ,PRINT_FUNC print_func) {
 
-    PAdptArray adt = (PAdptArray)malloc(sizeof(AdptArray_));
-    if (!adt)
+    PAdptArray adaptArr = (PAdptArray)malloc(sizeof(AdptArray_));
+    if (!adaptArr)
     {
         return NULL;
     }
 
-    adt->addArr = (PElement*)malloc(sizeof(PElement));
-    adt->copy_func = copy_func;
-    adt->delete_func = del_func;
-    adt->print_func = print_func;
-    adt->size= 0;
+    adaptArr->adpArr = (PElement*)malloc(sizeof(PElement)); 
+    adaptArr->copy_func = copy_func;
+    adaptArr->delete_func = del_func;
+    adaptArr->print_func = print_func;
+    adaptArr->size= 0;
 
-    return adt;
+    return adaptArr;
 }
 
-// free adt alongside all its elements
-void DeleteAdptArray(PAdptArray adt) {
+/**
+ * delete adaptArr alongside its elements
+ * @param adaptArr adaptArr to delete
+*/
+void DeleteAdptArray(PAdptArray adaptArr) {
 
-    if (!adt)
+    if (!adaptArr)
     {
         return;
     }
 
-    for (int i = 0; i < adt->size; i++)
+    for (int i = 0; i < adaptArr->size; i++)
     {
-        if (adt->addArr[i]) { // elements can be NULL
-            adt->delete_func(adt->addArr[i]);
+        if (adaptArr->adpArr[i]) { // elements can be NULL
+            adaptArr->delete_func(adaptArr->adpArr[i]);
         }
     }
 
-    free(adt->addArr);
-    free(adt);
+    free(adaptArr->adpArr);
+    free(adaptArr);
 }
 
-Result SetAdptArrayAt(PAdptArray adt, int i, PElement element) {
-    if (!adt || !element)
+/**
+ * put element in adaptArr in a given index
+ * @param adaptArr adaptArr to set 
+ * @param i index to set
+ * @param element element to put in the adaptArr
+ * @return 1 or 0 if the set operation succeded or faild
+*/
+Result SetAdptArrayAt(PAdptArray adaptArr, int i, PElement element) {
+    if (!adaptArr || !element)
     {
         return FAIL;
     }
@@ -62,79 +76,95 @@ Result SetAdptArrayAt(PAdptArray adt, int i, PElement element) {
         return FAIL;
     }
     
-    if (i + 1 < adt->size) // there is such index in array
+    if (i + 1 < adaptArr->size) // there is such index in array
     {
-        if (adt->addArr[i]) // not NULL, free current element
+        if (adaptArr->adpArr[i]) // not NULL, free current element
         {
-            free(adt->addArr[i]);
+            free(adaptArr->adpArr[i]);
         }
-        adt->addArr[i] = adt->copy_func(element);
+        adaptArr->adpArr[i] = adaptArr->copy_func(element);
         return SUCCESS;
     }
     else { // array is too small, incrase its size 
         PElement* new_arr = (PElement)calloc(i + 1, sizeof(PElement));
         // copy all elements
-        for (int i = 0; i < adt->size; i++)
+        for (int i = 0; i < adaptArr->size; i++)
         {
-            if (adt->addArr[i]) // not NULL
+            if (adaptArr->adpArr[i]) // not NULL
             {
-                new_arr[i] = adt->addArr[i];
+                new_arr[i] = adaptArr->adpArr[i];
             }
             else {
                 new_arr[i] = NULL;
             }
         }
-        free(adt->addArr);
-        adt->addArr = new_arr;
-        adt->addArr[i] = adt->copy_func(element);
-        adt->size = i + 1;
+        free(adaptArr->adpArr);
+        adaptArr->adpArr = new_arr;
+        adaptArr->adpArr[i] = adaptArr->copy_func(element);
+        adaptArr->size = i + 1;
         return SUCCESS;
     }
     
     
 }
 
-PElement GetAdptArrayAt(PAdptArray adt, int i) {
+/**
+ * get element from the adaptArr from given index
+ * @param adaptArr adaptArr to get from
+ * @param i which index to get
+ * @return element in the given index, NULL if not exist
+*/
+PElement GetAdptArrayAt(PAdptArray adaptArr, int i) {
 
-    if (!adt)
+    if (!adaptArr)
     {
         return NULL; 
     }
-    if (adt->size < i || i < 0)
+    if (adaptArr->size < i || i < 0)
     {
         return NULL;
     }
-    if (adt->addArr[i] == NULL)
+    if (adaptArr->adpArr[i] == NULL)
     {
         return NULL;
     }
 
-    return adt->copy_func(adt->addArr[i]);
+    return adaptArr->copy_func(adaptArr->adpArr[i]);
     
 }
 
-int GetAdptArraySize(PAdptArray adt) {
+/**
+ * get adaptArr aize
+ * @param adaptArr adaptArr to get its size
+ * @return size of adaptArr
+*/
+int GetAdptArraySize(PAdptArray adaptArr) {
 
-    if (!adt)
+    if (!adaptArr)
     {
         return -1;
     }
 
-    return adt ? adt->size : -1;   
+    return adaptArr ? adaptArr->size : -1;   
 }
 
-void PrintDB(PAdptArray adt) {
+/**
+ * prints all array elements
+ * @param adaptArr array to print
 
-    if (!adt)
+*/
+void PrintDB(PAdptArray adaptArr) {
+
+    if (!adaptArr)
     {
         return;
     }
 
-    for (int i = 0; i < adt->size; i++)
+    for (int i = 0; i < adaptArr->size; i++)
     {
-        if (adt->addArr[i])
+        if (adaptArr->adpArr[i])
         {
-            adt->print_func(adt->addArr[i]);
+            adaptArr->print_func(adaptArr->adpArr[i]);
         }
     }
 }
