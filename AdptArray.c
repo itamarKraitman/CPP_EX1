@@ -15,7 +15,7 @@ typedef struct AdptArray_
 }AdptArray_;
 
 
-// creating adt, takes three arguments and retruns NULL id fails 
+// creating adt, takes three arguments and retruns NULL if fails 
 PAdptArray CreateAdptArray(COPY_FUNC copy_func, DEL_FUNC del_func ,PRINT_FUNC print_func) {
 
     PAdptArray adt = (PAdptArray)malloc(sizeof(AdptArray_));
@@ -120,7 +120,7 @@ int GetAdptArraySize(PAdptArray adt) {
         return -1;
     }
 
-    return adt->size;   
+    return adt ? adt->size : -1;   
 }
 
 void PrintDB(PAdptArray adt) {
