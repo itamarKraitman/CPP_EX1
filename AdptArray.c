@@ -2,7 +2,7 @@
 #include "AdptArray.h"
 #include <stdlib.h>
 
-// defining the ADT
+// defins the ADT
 typedef struct AdptArray_
 {
     PElement* adpArr;
@@ -14,7 +14,7 @@ typedef struct AdptArray_
 
 
 /**
- * creating adaptArr, takes three arguments and retruns NULL if fails 
+ * creats adaptArr, takes three arguments and retruns NULL if fails 
  * @param copy_func copy function
  * @param del_func delete function
  * @param print_func print function
@@ -38,7 +38,7 @@ PAdptArray CreateAdptArray(COPY_FUNC copy_func, DEL_FUNC del_func ,PRINT_FUNC pr
 }
 
 /**
- * delete adaptArr alongside its elements
+ * deletes adaptArr alongside its elements
  * @param adaptArr adaptArr to delete
 */
 void DeleteAdptArray(PAdptArray adaptArr) {
@@ -60,7 +60,7 @@ void DeleteAdptArray(PAdptArray adaptArr) {
 }
 
 /**
- * put element in adaptArr in a given index
+ * puts element in adaptArr in a given index
  * @param adaptArr adaptArr to set 
  * @param i index to set
  * @param element element to put in the adaptArr
@@ -109,7 +109,7 @@ Result SetAdptArrayAt(PAdptArray adaptArr, int i, PElement element) {
 }
 
 /**
- * get element from the adaptArr from given index
+ * gets element from the adaptArr from given index
  * @param adaptArr adaptArr to get from
  * @param i which index to get
  * @return element in the given index, NULL if not exist
@@ -134,7 +134,7 @@ PElement GetAdptArrayAt(PAdptArray adaptArr, int i) {
 }
 
 /**
- * get adaptArr aize
+ * gets adaptArr aize
  * @param adaptArr adaptArr to get its size
  * @return size of adaptArr
 */
@@ -151,7 +151,6 @@ int GetAdptArraySize(PAdptArray adaptArr) {
 /**
  * prints all array elements
  * @param adaptArr array to print
-
 */
 void PrintDB(PAdptArray adaptArr) {
 
