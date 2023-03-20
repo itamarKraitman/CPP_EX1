@@ -83,7 +83,6 @@ Result SetAdptArrayAt(PAdptArray adaptArr, int i, PElement element) {
             free(adaptArr->adpArr[i]);
         }
         adaptArr->adpArr[i] = adaptArr->copy_func(element);
-        return SUCCESS;
     }
     else { // array is too small, incrase its size 
         PElement* new_arr = (PElement)calloc(i + 1, sizeof(PElement));
@@ -103,10 +102,8 @@ Result SetAdptArrayAt(PAdptArray adaptArr, int i, PElement element) {
         adaptArr->adpArr = new_arr;
         adaptArr->adpArr[i] = adaptArr->copy_func(element); // insert copy of the element
         adaptArr->size = i + 1; 
-        return SUCCESS;
     }
-    
-    
+        return SUCCESS;
 }
 
 /**
